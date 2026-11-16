@@ -449,3 +449,5 @@ button.btn { cursor: pointer; }
 .book__go p { margin: 0; color: var(--ink-2); font-size: 14px; }
 .book__go .book__note { color: var(--muted); font-size: 13px; }
 @media (max-width: 520px) { .book__where { grid-template-columns: 1fr; } }
+
+.book__calc .book__dep { padding-top: 6px; border-top: 1px dashed var(--line); }

@@ -174,7 +174,7 @@
     const cars = (x.cars || []).map((c) => {
       const mrow = c.months?.[month] || [], base = c.base || [];
       const row = (x.site_tiers || [0, 1, 2, 3]).map((i) => num(mrow[i]) || num(base[i]) || num(base[0]));
-      const car = { model: c.model, title: c.title, sub: c.sub, prices: row };
+      const car = { model: c.model, title: c.title, sub: c.sub, prices: row, deposit: num(c.deposit) };
       if (s) {
         const a = start.slice(0, 16), b = end.slice(0, 16);
         car.free = !(c.busy || []).some(([bs, be]) => bs < b && a < be);
@@ -293,10 +293,12 @@
       <div><span>Получение: ${pa}</span><b>${pb ? rub(pb) : 'бесплатно'}</b></div>
       <div><span>Возврат: ${da}</span><b>${db ? rub(db) : 'бесплатно'}</b></div>
       <div class="book__total"><span>Итого</span><b>${rub(total)}</b></div>
-      <small>Залог возвращается при сдаче автомобиля и в итог не входит.</small>`;
+      <div class="book__dep"><span>Залог</span><b>${Q.dep ? rub(Q.dep) : 'от 5 000 до 30 000 ₽'}</b></div>
+      <small>Залог возвращается сразу при сдаче автомобиля, наличными. В итог он не входит.</small>`;
     Q.text = `Здравствуйте! Хочу забронировать ${picked.name} с ${dm(from.value)} ${Q.tA} по ${dm(to.value)} ${Q.tB} (${Q.days} сут).\n`
       + `Получение: ${pa}. Возврат: ${da}.\n`
-      + `Аренда ${rub(Q.rent)}${pb ? ` + подача ${rub(pb)}` : ''}${db ? ` + возврат ${rub(db)}` : ''} = ${rub(total)}.`;
+      + `Аренда ${rub(Q.rent)}${pb ? ` + подача ${rub(pb)}` : ''}${db ? ` + возврат ${rub(db)}` : ''} = ${rub(total)}.`
+      + `\nЗалог ${Q.dep ? rub(Q.dep) : 'по условиям'} — возвращается сразу при сдаче автомобиля, наличными.`;
   }
   pick.addEventListener('change', calc); drop.addEventListener('change', calc);
   async function check() {
@@ -319,7 +321,7 @@
     }
     const price = c.prices[tierOf(c.days)];
     status.className = 'book__status ok';
-    Q = { days: c.days, price, rent: c.total || c.days * price, tA, tB };
+    Q = { days: c.days, price, rent: c.total || c.days * price, tA, tB, dep: c.deposit || 0 };
     status.innerHTML = `<b>Свободна ✓</b>${c.days} сут × ${rub(price)} = <span class="sum">${rub(Q.rent)}</span>`;
     calc(); lead.hidden = false;
   }
