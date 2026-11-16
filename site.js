@@ -92,6 +92,36 @@
   });
   if (vids.length > 1) show(0); else if (vids[0]) { vids[0].loop = true; vids[0].classList.add('on'); vids[0].play().catch(() => {}); }
 
+  // ---------- прокрутка меняет интерфейс: главный экран, меню, история «как забронировать» ----------
+  {
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const hero = $('#hero'), nav = $('#nav'), story = $('.story');
+    const steps = story ? [...story.querySelectorAll('.story__step')] : [], imgs = story ? [...story.querySelectorAll('.story__img')] : [],
+      cards = story ? [...story.querySelectorAll('.story__card')] : [];
+    const clamp = (v) => Math.min(1, Math.max(0, v));
+    let ticking = false, last = -1;
+    function frame() {
+      ticking = false;
+      const y = scrollY;
+      nav?.classList.toggle('small', y > 40);
+      if (calm) return;
+      if (hero && y < hero.offsetHeight * 1.2) hero.style.setProperty('--p', clamp(y / hero.offsetHeight).toFixed(3));
+      if (story) {
+        const r = story.getBoundingClientRect();
+        const sp = clamp(-r.top / (r.height - innerHeight));
+        story.style.setProperty('--sp', sp.toFixed(3));
+        const i = Math.min(steps.length - 1, Math.floor(sp * steps.length * 0.999));
+        if (i !== last) {
+          last = i;
+          [steps, imgs, cards].forEach((list) => list.forEach((el, j) => el.classList.toggle('on', j === i)));
+        }
+      }
+    }
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }, { passive: true });
+    addEventListener('resize', frame);
+    frame();
+  }
+
   // ---------- автопарк и тарифы ----------
   // Каталог моделей. Свободные на даты — только те, что свободны по CRM (сейчас макет: FREE).
   // Цены моделей, которых ещё нет в парке, — черновик для владельца.

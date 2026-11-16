@@ -9,7 +9,7 @@
 <meta name="description" content="Аренда автомобилей в Калининграде. Подача в аэропорт Храброво и по области.">
 <meta name="theme-color" content="#0f1216">
 <link rel="stylesheet" href="fonts/onest.css">
-<link rel="stylesheet" href="site.css?v=14">
+<link rel="stylesheet" href="site.css?v=15">
 </head>
 <body>
 
@@ -59,12 +59,36 @@
 
 </section>
 
-<!-- КАК ЗАБРОНИРОВАТЬ -->
-<section class="section wrap" id="how">
-  <div class="head"><h2 class="h2">Как забронировать и получить автомобиль</h2></div>
-  <div class="steps steps--2">
-    <div class="step"><span class="step__n">01</span><h3>Выберите даты и забронируйте</h3><p>Укажите даты аренды — сайт покажет свободные машины и посчитает стоимость. Выберите автомобиль и оставьте заявку, мы подтвердим бронь.</p></div>
-    <div class="step"><span class="step__n">02</span><h3>Получите автомобиль</h3><p>Заберите машину в офисе или закажите доставку: менеджер приедет, расскажет об условиях договора, договор подписываем на месте. Оплата — тоже на месте.</p></div>
+<!-- КАК ЗАБРОНИРОВАТЬ: история, которая меняется при прокрутке -->
+<section class="story" id="how">
+  <div class="story__pin">
+    <div class="story__media">
+      <img class="story__img on" src="img/story-1.jpg" alt="Toyota Camry на набережной в Калининграде" loading="lazy">
+      <img class="story__img" src="img/story-2.jpg" alt="BMW 1 Series на трассе вдоль моря" loading="lazy">
+    </div>
+    <div class="story__shade"></div>
+    <div class="story__text">
+      <h2 class="h2">Как забронировать и получить автомобиль</h2>
+      <div class="story__steps">
+        <div class="story__step on"><span class="step__n">01</span><h3>Выберите даты и забронируйте</h3><p>Укажите даты аренды — сайт покажет свободные машины и посчитает стоимость. Нажмите «Забронировать» и напишите нам в Telegram или Max — мы подтвердим бронь.</p></div>
+        <div class="story__step"><span class="step__n">02</span><h3>Получите автомобиль</h3><p>Заберите машину в офисе или закажите доставку: менеджер приедет, расскажет об условиях договора, договор подписываем на месте. Оплата — тоже на месте.</p></div>
+      </div>
+      <div class="story__bar"><i></i></div>
+    </div>
+    <div class="story__ui">
+      <div class="story__card on">
+        <small>17 – 20 ноября · 3 суток</small>
+        <b>Toyota Camry 2019</b>
+        <span class="story__ok">Свободна ✓</span>
+        <div class="story__sum">3 × 3 890 ₽ = <b>11 670 ₽</b></div>
+      </div>
+      <div class="story__card">
+        <small>Подача автомобиля</small>
+        <b>Аэропорт «Храброво»</b>
+        <span class="story__ok">Договор и оплата на месте</span>
+        <div class="story__sum">или заберите в офисе на Маршала Борзова, 65А</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -180,6 +204,6 @@
   <button class="btn btn--dark btn--sm" type="button" id="cookieOk">Понятно</button>
 </div>
 
-<script src="site.js?v=18"></script>
+<script src="site.js?v=19"></script>
 </body>
 </html>

@@ -372,3 +372,63 @@ button.btn { cursor: pointer; }
 .toast { background: #2a3038; }
 .reviews__ya iframe, .contacts__map { border-color: var(--line); }
 .op { background: #4a3b10; color: #ffd76a; }
+
+/* ---------- прокрутка меняет интерфейс ---------- */
+/* главный экран: видео приближается, текст уходит вверх и гаснет, вся сцена чуть отъезжает */
+.hero { scale: calc(1 - var(--p, 0) * .06); transform-origin: 50% 0; }
+.hero__media { scale: calc(1 + var(--p, 0) * .14); }
+.hero__copy { translate: 0 calc(var(--p, 0) * -70px); opacity: calc(1 - var(--p, 0) * 1.7); }
+.hero__shade { opacity: calc(1 + var(--p, 0) * .6); }
+/* меню: после начала прокрутки становится компактнее и плотнее */
+.nav { transition: height .35s, background .35s, top .35s; }
+.nav.small { height: 54px; top: 8px; background: rgba(15, 18, 22, .9); }
+
+/* история «как забронировать»: блок закреплён, шаги и картинки меняются при прокрутке */
+.story { position: relative; height: 260vh; margin: 40px 0; }
+.story__pin { position: sticky; top: 0; height: 100svh; overflow: hidden; }
+.story__media { position: absolute; inset: 10px; border-radius: 34px; overflow: hidden; background: #111; }
+.story__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; scale: calc(1.04 + var(--sp, 0) * .1); transition: opacity 1s ease; }
+.story__img.on { opacity: 1; }
+.story__shade { position: absolute; inset: 10px; border-radius: 34px; pointer-events: none;
+  background: linear-gradient(90deg, rgba(8, 10, 14, .85) 0%, rgba(8, 10, 14, .55) 42%, rgba(8, 10, 14, .1) 75%), linear-gradient(0deg, rgba(8, 10, 14, .5), transparent 40%); }
+.story__text { position: absolute; left: clamp(28px, 6vw, 90px); top: 50%; translate: 0 -50%; width: min(520px, 100% - 56px); color: #fff; }
+.story__text .h2 { margin-bottom: 26px; font-size: clamp(32px, 3.2vw, 46px); line-height: 1.08; }
+.story__text { width: min(600px, 100% - 56px); }
+.story__steps { display: grid; gap: 22px; }
+.story__step { opacity: .32; transition: opacity .5s, translate .5s; translate: 0 6px; }
+.story__step.on { opacity: 1; translate: 0 0; }
+.story__step h3 { font-size: 24px; margin: 6px 0 8px; }
+.story__step p { margin: 0; color: rgba(255, 255, 255, .78); }
+.story__bar { margin-top: 30px; height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .15); overflow: hidden; }
+.story__bar i { display: block; height: 100%; width: calc(var(--sp, 0) * 100%); background: var(--coral); }
+.story__ui { position: absolute; right: clamp(28px, 5vw, 80px); bottom: clamp(36px, 9vh, 90px); width: 320px; }
+.story__card { position: absolute; right: 0; bottom: 0; width: 100%; padding: 20px 22px; border-radius: 24px; color: #fff;
+  background: rgba(20, 23, 28, .55); border: 1px solid rgba(255, 255, 255, .14); backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  opacity: 0; translate: 0 24px; transition: opacity .6s, translate .6s cubic-bezier(.2, .7, .2, 1); }
+.story__card.on { opacity: 1; translate: 0 0; }
+.story__card small { display: block; color: rgba(255, 255, 255, .65); font-size: 13px; }
+.story__card > b { display: block; font-size: 20px; margin: 4px 0 10px; }
+.story__ok { display: inline-block; padding: 4px 10px; border-radius: 999px; background: rgba(23, 169, 107, .22); color: #5be0a4; font-size: 13px; font-weight: 600; }
+.story__sum { margin-top: 12px; font-size: 14px; color: rgba(255, 255, 255, .8); }
+.story__sum b { font-size: 18px; color: #fff; }
+@media (max-width: 760px) {
+  .story { height: 240vh; }
+  .story__shade { background: linear-gradient(0deg, rgba(8, 10, 14, .92) 0%, rgba(8, 10, 14, .7) 55%, rgba(8, 10, 14, .25) 100%); }
+  .story__text { top: auto; bottom: 34px; translate: none; left: 26px; width: calc(100% - 52px); }
+  .story__text .h2 { font-size: 28px; margin-bottom: 16px; }
+  .story__steps { display: block; position: relative; min-height: 190px; }
+  .story__step { position: absolute; inset: 0 0 auto 0; opacity: 0; }
+  .story__step.on { opacity: 1; }
+  .story__step h3 { font-size: 21px; }
+  .story__step p { font-size: 15px; }
+  .story__ui { left: 26px; right: 26px; top: 90px; bottom: auto; width: auto; }
+  .story__card { top: 0; bottom: auto; padding: 14px 16px; }
+  .story__card > b { font-size: 17px; margin-bottom: 6px; }
+}
+/* кто просит меньше анимаций — показываем всё сразу, без закрепления */
+@media (prefers-reduced-motion: reduce) {
+  .hero, .hero__media, .hero__copy { scale: none; translate: none; opacity: 1; }
+  .story { height: auto; }
+  .story__pin { position: relative; height: auto; min-height: 100svh; }
+  .story__step { opacity: 1; translate: none; }
+}
