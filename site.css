@@ -417,8 +417,9 @@ button.btn { cursor: pointer; }
   .story__text { top: auto; bottom: 34px; translate: none; left: 26px; width: calc(100% - 52px); }
   .story__text .h2 { font-size: 28px; margin-bottom: 16px; }
   .story__steps { display: block; position: relative; min-height: 190px; }
-  .story__step { position: absolute; inset: 0 0 auto 0; opacity: 0; }
-  .story__step.on { opacity: 1; }
+  /* шаги лежат друг на друге: старый сначала гаснет, новый появляется после — текст не накладывается */
+  .story__step { position: absolute; inset: 0 0 auto 0; opacity: 0; visibility: hidden; transition: opacity .2s, visibility 0s .2s; }
+  .story__step.on { opacity: 1; visibility: visible; transition: opacity .3s .22s, visibility 0s .22s; }
   .story__step h3 { font-size: 21px; }
   .story__step p { font-size: 15px; }
   .story__ui { left: 26px; right: 26px; top: 90px; bottom: auto; width: auto; }
