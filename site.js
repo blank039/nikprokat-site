@@ -174,7 +174,7 @@
     const cars = (x.cars || []).map((c) => {
       const mrow = c.months?.[month] || [], base = c.base || [];
       const row = (x.site_tiers || [0, 1, 2, 3]).map((i) => num(mrow[i]) || num(base[i]) || num(base[0]));
-      const car = { model: c.model, title: c.title, sub: c.sub, prices: row, deposit: num(c.deposit) };
+      const car = { model: c.model, title: c.title, sub: c.sub, prices: row, deposit: num(c.deposit), photos: c.photos || [] };
       if (s) {
         const a = start.slice(0, 16), b = end.slice(0, 16);
         car.free = !(c.busy || []).some(([bs, be]) => bs < b && a < be);
@@ -188,12 +188,13 @@
     return { cars, delivery: x.delivery || [] };
   }
   function apply(x) {   // цены/названия машин из CRM поверх карточек каталога
-    MODELS.forEach((m) => { m.prices = BASE.get(m.id); });
+    MODELS.forEach((m) => { m.prices = BASE.get(m.id); m.photos = null; });
     SYNCED = new Set(); FREE = new Set(); TOTAL = {};
     for (const c of x?.cars || []) {
       const m = MODELS.find((k) => k.id === c.model);
       if (!m) continue;
       SYNCED.add(m.id); m.prices = c.prices;
+      if (c.photos?.length) m.photos = c.photos.filter((f) => /^[0-9a-f]{16}\.jpg$/.test(f)).map((f) => `data/photos/${f}`);
       if (c.title) m.name = c.title;
       if (c.sub) m.sub = c.sub;
       if (c.free) { FREE.add(m.id); TOTAL[m.id] = c.total; }
@@ -328,13 +329,14 @@
   function openBook(id) {
     picked = MODELS.find((m) => m.id === id);
     const real = CARS.find((c) => c.id === id);
-    picked.gallery = real ? real.gallery : [picked.img];
+    const own = picked.photos?.length ? picked.photos : null;   // фото из CRM, если загружены
+    picked.gallery = own || (real ? real.gallery : [picked.img]);
     $('#bookName').textContent = picked.name;
     $('#bookSub').textContent = `${picked.sub} · от ${rub(picked.prices[3])} в сутки`;
     $('#bookThumbs').innerHTML = picked.gallery.length > 1 ? picked.gallery.map((g) => `<img src="${g}" alt="">`).join('') : '';
     [...$('#bookThumbs').children].forEach((t, j) => t.addEventListener('click', () => photo(j)));
-    $('#bookImg').style.objectPosition = real ? real.pos : '50% 50%';
-    photo(real ? real.cover : 0);
+    $('#bookImg').style.objectPosition = real && !own ? real.pos : '50% 50%';
+    photo(real && !own ? real.cover : 0);
     from.value = range ? range.from : fFrom.value; to.value = range ? range.to : fTo.value;
     from.min = to.min = iso(new Date());
     WHERE = wherePlaces();
