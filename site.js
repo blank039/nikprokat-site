@@ -97,7 +97,7 @@
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const hero = $('#hero'), nav = $('#nav'), story = $('.story');
     const steps = story ? [...story.querySelectorAll('.story__step')] : [], imgs = story ? [...story.querySelectorAll('.story__img')] : [],
-      cards = story ? [...story.querySelectorAll('.story__card')] : [];
+      cards = [];
     const clamp = (v) => Math.min(1, Math.max(0, v));
     let ticking = false, last = -1;
     function frame() {
@@ -246,12 +246,14 @@
   renderFleet();
   const places = (rows) => { $('#places').innerHTML = rows.map(([a, b]) => `<li><b>${a}</b><span class="muted">${b}</span></li>`).join(''); };
   places(PLACES);
+  // места получения/возврата для окна брони: офис бесплатно + подача из CRM (цена за одну сторону)
+  let DELIV = PLACES.map(([a, b]) => [a, +b.replace(/\D/g, '')]);
   crm().then((x) => {
     if (!x) return;
     apply(x);
     if (!range) renderFleet();
     CARS.forEach((c) => { const m = MODELS.find((k) => k.id === c.id); if (SYNCED.has(c.id)) c.price = Math.min(...m.prices); });
-    if (x.delivery?.length) places(x.delivery.map((r) => [r.place, rub(Math.round(r.price))]));
+    if (x.delivery?.length) { DELIV = x.delivery.map((r) => [r.place, Math.round(+r.price) || 0]); places(DELIV.map(([a, b]) => [a, rub(b)])); }
   });
 
   // плавное появление блоков при прокрутке
@@ -268,9 +270,38 @@
     $('#bookImg').src = picked.gallery[i];
     [...$('#bookThumbs').children].forEach((t, j) => t.classList.toggle('on', j === i));
   }
-  let asked = 0;
+  let asked = 0, Q = null, WHERE = [];
+  const pick = $('#dPick'), drop = $('#dDrop'), go = $('#bookGo');
+  const OFFICE = 'Офис проката (ул. Маршала Борзова, 65А)';
+  const dm = (v) => v.split('-').reverse().slice(0, 2).join('.');
+  function wherePlaces() {
+    const opts = [[OFFICE, 0], ...DELIV];
+    const html = opts.map(([a, b], i) => `<option value="${i}">${a} — ${b ? rub(b) : 'бесплатно'}</option>`).join('');
+    const pv = pick.value, dv = drop.value;
+    pick.innerHTML = html; drop.innerHTML = html;
+    pick.value = pv || '0'; drop.value = dv || '0';
+    if (pick.selectedIndex < 0) pick.value = '0';
+    if (drop.selectedIndex < 0) drop.value = '0';
+    return opts;
+  }
+  function calc() {
+    if (!Q) return;
+    const [pa, pb] = WHERE[+pick.value] || [OFFICE, 0], [da, db] = WHERE[+drop.value] || [OFFICE, 0];
+    const total = Q.rent + pb + db;
+    $('#bookCalc').innerHTML = `
+      <div><span>Аренда, ${Q.days} сут</span><b>${rub(Q.rent)}</b></div>
+      <div><span>Получение: ${pa}</span><b>${pb ? rub(pb) : 'бесплатно'}</b></div>
+      <div><span>Возврат: ${da}</span><b>${db ? rub(db) : 'бесплатно'}</b></div>
+      <div class="book__total"><span>Итого</span><b>${rub(total)}</b></div>
+      <small>Залог возвращается при сдаче автомобиля и в итог не входит.</small>`;
+    Q.text = `Здравствуйте! Хочу забронировать ${picked.name} с ${dm(from.value)} ${Q.tA} по ${dm(to.value)} ${Q.tB} (${Q.days} сут).\n`
+      + `Получение: ${pa}. Возврат: ${da}.\n`
+      + `Аренда ${rub(Q.rent)}${pb ? ` + подача ${rub(pb)}` : ''}${db ? ` + возврат ${rub(db)}` : ''} = ${rub(total)}.`;
+  }
+  pick.addEventListener('change', calc); drop.addEventListener('change', calc);
   async function check() {
     const days = rentDays(from.value, '10:00', to.value, '10:00');
+    Q = null; go.hidden = true;
     if (!from.value || !to.value || days < 1) { status.className = 'book__status'; status.textContent = 'Выберите даты — покажем, свободна ли машина.'; lead.hidden = true; return; }
     const n = ++asked, tA = range?.from === from.value ? range.fromT : '10:00', tB = range?.to === to.value ? range.toT : '10:00';
     status.className = 'book__status'; status.textContent = 'Проверяем даты…'; lead.hidden = true;
@@ -288,8 +319,9 @@
     }
     const price = c.prices[tierOf(c.days)];
     status.className = 'book__status ok';
-    status.innerHTML = `<b>Свободна ✓</b>${c.days} сут × ${rub(price)} = <span class="sum">${rub(c.total || c.days * price)}</span>`;
-    lead.hidden = false;
+    Q = { days: c.days, price, rent: c.total || c.days * price, tA, tB };
+    status.innerHTML = `<b>Свободна ✓</b>${c.days} сут × ${rub(price)} = <span class="sum">${rub(Q.rent)}</span>`;
+    calc(); lead.hidden = false;
   }
   function openBook(id) {
     picked = MODELS.find((m) => m.id === id);
@@ -303,18 +335,26 @@
     photo(real ? real.cover : 0);
     from.value = range ? range.from : fFrom.value; to.value = range ? range.to : fTo.value;
     from.min = to.min = iso(new Date());
+    WHERE = wherePlaces();
     check(); dlg.showModal();
   }
   document.addEventListener('click', (e) => { const id = e.target.closest('[data-book]')?.dataset.book; if (id) openBook(id); });
   $('#bookClose').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
   from.addEventListener('change', check); to.addEventListener('change', check);
-  // Бронь — через мессенджер или звонок: сайт не собирает имён и телефонов. Текст заявки копируем в буфер.
-  const dm = (v) => v.split('-').reverse().slice(0, 2).join('.');
+  // Бронь — через мессенджер или звонок: сайт не собирает имён и телефонов.
+  // Перед переходом — предупреждение о предоплате; текст заявки готов заранее (Telegram подставит его сам, для Max копируем).
   document.addEventListener('click', (e) => {
-    if (!e.target.closest('.js-send') || !picked) return;
-    const sum = status.querySelector('.sum')?.textContent;
-    const text = `Здравствуйте! Хочу забронировать ${picked.name} с ${dm(from.value)} по ${dm(to.value)}${sum ? `, ${sum}` : ''}.`;
-    navigator.clipboard?.writeText(text).then(() => { $('.book__how').innerHTML = '<b>Текст заявки скопирован</b> — вставьте его в чат и отправьте.'; }, () => {});
+    const a = e.target.closest('.js-send');
+    if (!a || !picked || !Q?.text) return;
+    e.preventDefault();
+    const tg = a.dataset.app === 'Telegram';
+    $('#goOn').href = tg ? `https://t.me/nikprokat?text=${encodeURIComponent(Q.text)}` : a.href;
+    $('#goOn').textContent = `Продолжить в ${a.dataset.app}`;
+    $('#goNote').textContent = tg ? 'Текст заявки с машиной, датами и расчётом подставится в чат — останется отправить.'
+      : 'Текст заявки с машиной, датами и расчётом скопируется — вставьте его в чат и отправьте.';
+    lead.hidden = true; go.hidden = false;
   });
+  $('#goOn').addEventListener('click', () => { navigator.clipboard?.writeText(Q?.text || '').catch(() => {}); setTimeout(() => { go.hidden = true; lead.hidden = false; }, 400); });
+  $('#goBack').addEventListener('click', () => { go.hidden = true; lead.hidden = false; });
 })();

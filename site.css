@@ -432,3 +432,20 @@ button.btn { cursor: pointer; }
   .story__pin { position: relative; height: auto; min-height: 100svh; }
   .story__step { opacity: 1; translate: none; }
 }
+
+/* окно брони: где получить / где сдать, расчёт, предупреждение о предоплате */
+.book__where { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+.book__where label { display: grid; gap: 6px; min-width: 0; font-size: 13px; color: var(--muted); }
+.book__where select { min-width: 0; width: 100%; height: 50px; padding: 0 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg); color: var(--ink); font: 500 14px Onest, sans-serif; color-scheme: dark; }
+.book__calc { display: grid; gap: 6px; margin-bottom: 6px; padding: 14px 16px; border-radius: 16px; background: var(--bg); font-size: 14px; }
+.book__calc div { display: flex; justify-content: space-between; gap: 12px; color: var(--ink-2); }
+.book__calc div b { white-space: nowrap; color: var(--ink); font-weight: 600; }
+.book__calc .book__total { margin-top: 4px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 17px; }
+.book__calc .book__total b { font-weight: 800; color: var(--coral-d); }
+.book__calc small { color: var(--muted); font-size: 12px; }
+.book__go { display: grid; gap: 10px; padding: 18px; border-radius: 18px; background: rgba(241, 96, 67, .1); border: 1px solid rgba(241, 96, 67, .35); }
+.book__go[hidden] { display: none; }
+.book__go b { font-size: 17px; }
+.book__go p { margin: 0; color: var(--ink-2); font-size: 14px; }
+.book__go .book__note { color: var(--muted); font-size: 13px; }
+@media (max-width: 520px) { .book__where { grid-template-columns: 1fr; } }

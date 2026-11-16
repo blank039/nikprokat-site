@@ -9,7 +9,7 @@
 <meta name="description" content="Аренда автомобилей в Калининграде. Подача в аэропорт Храброво и по области.">
 <meta name="theme-color" content="#0f1216">
 <link rel="stylesheet" href="fonts/onest.css">
-<link rel="stylesheet" href="site.css?v=15">
+<link rel="stylesheet" href="site.css?v=16">
 </head>
 <body>
 
@@ -74,20 +74,6 @@
         <div class="story__step"><span class="step__n">02</span><h3>Получите автомобиль</h3><p>Заберите машину в офисе или закажите доставку: менеджер приедет, расскажет об условиях договора, договор подписываем на месте. Оплата — тоже на месте.</p></div>
       </div>
       <div class="story__bar"><i></i></div>
-    </div>
-    <div class="story__ui">
-      <div class="story__card on">
-        <small>17 – 20 ноября · 3 суток</small>
-        <b>Toyota Camry 2019</b>
-        <span class="story__ok">Свободна ✓</span>
-        <div class="story__sum">3 × 3 890 ₽ = <b>11 670 ₽</b></div>
-      </div>
-      <div class="story__card">
-        <small>Подача автомобиля</small>
-        <b>Аэропорт «Храброво»</b>
-        <span class="story__ok">Договор и оплата на месте</span>
-        <div class="story__sum">или заберите в офисе на Маршала Борзова, 65А</div>
-      </div>
     </div>
   </div>
 </section>
@@ -188,12 +174,23 @@
         <label>Начало<input type="date" id="dFrom"></label>
         <label>Конец<input type="date" id="dTo"></label>
       </div>
+      <div class="book__where">
+        <label>Где получить<select id="dPick"></select></label>
+        <label>Где сдать<select id="dDrop"></select></label>
+      </div>
       <div class="book__status" id="bookStatus"></div>
       <div class="book__lead" id="bookLead">
-        <p class="book__how">Чтобы забронировать, напишите или позвоните нам — текст заявки скопируется сам, останется вставить его в чат.</p>
-        <a class="btn btn--wide js-send" href="https://t.me/nikprokat" target="_blank" rel="noopener"><svg class="i"><use href="#tg"/></svg> Забронировать в Telegram</a>
-        <a class="btn btn--wide btn--dark js-send" href="https://web.max.ru/557016128" target="_blank" rel="noopener"><svg class="i"><use href="#max"/></svg> Забронировать в Max</a>
+        <div class="book__calc" id="bookCalc"></div>
+        <a class="btn btn--wide js-send" data-app="Telegram" href="https://t.me/nikprokat" target="_blank" rel="noopener"><svg class="i"><use href="#tg"/></svg> Забронировать в Telegram</a>
+        <a class="btn btn--wide btn--dark js-send" data-app="Max" href="https://web.max.ru/557016128" target="_blank" rel="noopener"><svg class="i"><use href="#max"/></svg> Забронировать в Max</a>
         <a class="btn btn--wide btn--line" href="tel:+79291667700">Позвонить: +7 (929) 166-77-00</a>
+      </div>
+      <div class="book__go" id="bookGo" hidden>
+        <b>Перенаправляем вас для дальнейшего бронирования</b>
+        <p>Для бронирования нужно будет внести предоплату — её запросит менеджер. Предоплата идёт в счёт аренды автомобиля.</p>
+        <p class="book__note" id="goNote"></p>
+        <a class="btn btn--wide" id="goOn" href="#" target="_blank" rel="noopener">Продолжить</a>
+        <button class="btn btn--wide btn--line" type="button" id="goBack">Назад</button>
       </div>
     </div>
   </div>
@@ -204,6 +201,6 @@
   <button class="btn btn--dark btn--sm" type="button" id="cookieOk">Понятно</button>
 </div>
 
-<script src="site.js?v=19"></script>
+<script src="site.js?v=20"></script>
 </body>
 </html>
