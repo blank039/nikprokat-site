@@ -343,3 +343,32 @@ button.btn { cursor: pointer; }
 .book__how { margin: 0 0 4px; font-size: 14px; color: var(--muted); }
 .btn--line { background: transparent; color: var(--ink); box-shadow: none; border: 1px solid var(--line); }
 .btn--line:hover { background: var(--bg); }
+
+/* ---------- тёмная тема (2026-11-16): светлый фон резал глаза ---------- */
+:root {
+  --bg: #0f1216;
+  --paper: #181c22;
+  --ink: #eef0f3;
+  --ink-2: #c3c8d0;
+  --muted: #8b929d;
+  --line: rgba(255, 255, 255, .08);
+  --coral-d: #ff7a5c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px -12px rgba(0, 0, 0, .55);
+  color-scheme: dark;
+}
+.nav { background: rgba(20, 23, 28, .72); border: 1px solid rgba(255, 255, 255, .07); }
+.btn--dark { background: #2a3038; color: #fff; }
+.btn--dark:hover { background: #343b45; }
+.cta { background-color: #0b0d10; }
+.trow:hover { background: rgba(255, 255, 255, .03); }
+.tariffs__class { background: #20262e; color: var(--ink); }
+.trow__pic { background: #20252c; }
+.trow__tiers .on { background: rgba(241, 96, 67, .16); }
+.book__status.ok { background: rgba(23, 169, 107, .14); }
+.book__status.busy { background: rgba(224, 71, 63, .14); }
+.badge { background: rgba(20, 23, 28, .85); }
+.when__in input[type=date] { color-scheme: dark; }
+.book::backdrop { background: rgba(0, 0, 0, .6); }
+.toast { background: #2a3038; }
+.reviews__ya iframe, .contacts__map { border-color: var(--line); }
+.op { background: #4a3b10; color: #ffd76a; }
