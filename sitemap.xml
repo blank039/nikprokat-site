@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://nikprokat.ru/</loc><lastmod>2026-11-16</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://nikprokat.ru/privacy.html</loc><lastmod>2026-11-16</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://nikprokat.ru/</loc><lastmod>2026-11-17</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-hrabrovo/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-zelenogradsk/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-svetlogorsk/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-yantarny/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-kaliningrad-dostavka/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-toyota-camry/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-bmw/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-bez-limita-probega/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-posutochno/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/arenda-avto-na-mesyac/</loc><lastmod>2026-11-17</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://nikprokat.ru/privacy.html</loc><lastmod>2026-11-17</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
 </urlset>
